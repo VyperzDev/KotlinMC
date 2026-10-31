@@ -1,12 +1,6 @@
-rootProject.name = "KotlinMC"
-
-pluginManagement {
-    plugins {
-        val kotlinV = File("versions/kotlin.txt").bufferedReader().use { it.readLine() }
-        id("kotlin").version(kotlinV)
-        id("kotlinx-serialization").version(kotlinV)
-
-        val kotlinAtomicV = File("versions/kotlinx-atomicfu.txt").bufferedReader().use { it.readLine() }
-        id("kotlinx-atomicfu").version(kotlinAtomicV)
-    }
+plugins {
+    // Lets Gradle auto-provision the JDK 25 toolchain when it is not installed locally.
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
+
+rootProject.name = "KotlinMC"

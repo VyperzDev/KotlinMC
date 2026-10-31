@@ -93,6 +93,19 @@ else
   upgrade=true
 fi
 
+mccoroutine=$(curl -s "$(api "Shynixn/MCCoroutine")" --header "$auth" | grep -Po "$tag_config" | cut -d "v" -f2-)
+local_mccoroutine=$(cat versions/mccoroutine.txt | xargs | tr -d '\r\n')
+
+printf "${GREEN}Latest MCCoroutine Version: %s${RESET}\n" "$mccoroutine"
+printf "${YELLOW}Local MCCoroutine Version: %s${RESET}\n\n" "$local_mccoroutine"
+
+if [ "$local_mccoroutine" = "$mccoroutine" ]; then
+  mccoroutine_diff="v$mccoroutine"
+else
+  mccoroutine_diff="v$local_mccoroutine -> v$mccoroutine"
+  upgrade=true
+fi
+
 if [ "${upgrade}" = "true" ]; then
     printf "${YELLOW}Updating is Required!${RESET}\n"
     upgrade=true
@@ -105,10 +118,11 @@ if [ "${upgrade}" = "true" ]; then
     kotlinx_atomicfu_changelog="- \`kotlinx-atomicfu\` ${kotlin_atomicfu_diff}\n"
     kotlinx_io_changelog="- \`kotlinx-io\` ${kotlin_io_diff}\n"
     kotlinx_datetime_changelog="- \`kotlinx-datetime\` ${kotlin_datetime_diff}\n"
+    mccoroutine_changelog="- \`mccoroutine\` ${mccoroutine_diff}\n"
 
     changelog_end="\n## [View on GitHub](https://github.com/gmitch215/KotlinMC)"
 
-    changelog="${header}${kotlin_changelog}${kotlinx_coroutines_changelog}${kotlinx_serialization_changelog}${kotlinx_atomicfu_changelog}${kotlinx_io_changelog}${kotlinx_datetime_changelog}${changelog_end}"
+    changelog="${header}${kotlin_changelog}${kotlinx_coroutines_changelog}${kotlinx_serialization_changelog}${kotlinx_atomicfu_changelog}${kotlinx_io_changelog}${kotlinx_datetime_changelog}${mccoroutine_changelog}${changelog_end}"
     echo -e $changelog > CHANGELOG.md
 
     bash scripts/upgrade-versions.sh

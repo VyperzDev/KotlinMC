@@ -1,0 +1,6 @@
+name: KotlinMCTest
+main: xyz.gmitch215.kotlinmc.test.TestPlugin
+version: "1.0.0"
+api-version: "26.3"
+author: gmitch215
+depend: [ Kotlin ]
